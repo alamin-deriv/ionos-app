@@ -105,7 +105,6 @@ const Servers = () => {
     }
 
     if (filter.cpu >= 0) {
-      console.log(filter.cpu);
       const filteredData = tempServers.filter(
         (server) => server.stats.cpu === Number(filter.cpu)
       );
