@@ -104,15 +104,22 @@ const Servers = () => {
       });
     }
 
-    if (filter.cpu >= 0) {
+    if (filter.cpu) {
+      const CPURange = filter.cpu.split("-")
       const filteredData = tempServers.filter(
-        (server) => server.stats.cpu === Number(filter.cpu)
+        (server) => {
+          return (
+            server.stats.cpu <= Number(CPURange[1]) &&
+            server.stats.cpu >= Number(CPURange[0])
+          );
+        }
+          
       );
 
       tempServers = filteredData;
       setCPUValue({
-        label: filter.cpu,
-        value: filter.cpu,
+        label: `${CPURange[0]}% - ${CPURange[1]}%`,
+        value: `${CPURange[0]}-${CPURange[1]}`,
       });
     }
 
@@ -279,6 +286,8 @@ const Servers = () => {
 
   const cpuTag = (arr) => {
     const cpuItem = arr.filter((item) => item.key === "cpu")[0];
+
+          const CPURange = cpuItem.value.split("-");
     return (
       <Tag
         onClose={(e) => {
@@ -291,7 +300,7 @@ const Servers = () => {
         round
         spaceRight
       >
-        CPU Percent:&nbsp;<b>{cpuItem.value}%</b>
+        CPU Percent:&nbsp;<b>{`${CPURange[0]}% - ${CPURange[1]}%`}</b>
       </Tag>
     );
   };
